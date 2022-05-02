@@ -1,7 +1,7 @@
 # create password text file
 echo password > password.txt
 
-# copy password / establish ssh with multiple hosts
+# establish ssh with multiple hosts
 for user in ansible root
 > do
 >  for os in ubuntu centos
