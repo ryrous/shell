@@ -12,3 +12,6 @@ for user in ansible root
 >   done
 >  done
 > done
+
+# cleanup
+rm password.txt
