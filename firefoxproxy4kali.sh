@@ -12,4 +12,4 @@ sudo systemctl restart proxychains4
 sudo systemctl start tor
 
 # Start firefox:
-proxychains firefox
+proxychains4 firefox
