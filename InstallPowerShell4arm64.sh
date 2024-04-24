@@ -2,7 +2,7 @@
 # Intall DotNet on ARM64
 ######################################
 # install the dependencies
-apt install libc6 libgcc1 libgssapi-krb5-2 libicu72 libssl1.1 libstdc++6 zlib1g -y
+sudo apt install libc6 libgcc1 libgssapi-krb5-2 libicu72 libssl1.1 libstdc++6 zlib1g -y
 
 # Get the .NET install script
 wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
@@ -17,7 +17,7 @@ chmod +x ./dotnet-install.sh
 # ./dotnet-install.sh --architecture arm64 --channel LTS --runtime dotnet
 
 # Set environment variables system-wide
-tee /etc/profile.d/dotnet.sh <<EOF
+sudo tee /etc/profile.d/dotnet.sh <<EOF
 export DOTNET_ROOT=$HOME/.dotnet
 export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
 EOF
