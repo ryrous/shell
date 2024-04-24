@@ -1,5 +1,5 @@
 # Find your partition information:
-# parted -l
+# parted -l or fdisk -l
 
 # To resize the fourth partition to the maximum size, so /dev/sda4
 # sandbox mode / no changes are done:
