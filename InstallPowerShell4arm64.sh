@@ -8,10 +8,10 @@ sudo apt install libc6 libgcc1 libgssapi-krb5-2 libicu72 libssl1.1 libstdc++6 zl
 wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
 
 # Make it executable
-chmod +x ./dotnet-install.sh
+sudo chmod +x dotnet-install.sh
 
 # Install the .NET SDK 8.0 (LTS) for ARM64
-./dotnet-install.sh #--architecture arm64 --channel LTS
+./dotnet-install.sh --architecture arm64 --channel LTS
 
 # Install the .NET runtime 8.0 (LTS) for ARM64
 # ./dotnet-install.sh --architecture arm64 --channel LTS --runtime dotnet
