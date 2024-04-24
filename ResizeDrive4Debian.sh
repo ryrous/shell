@@ -11,13 +11,13 @@
 set -e
 
 if [[ $# -eq 0 ]] ; then
-    echo 'please tell me the device to resize as the first parameter, like /dev/sda'
+    echo 'Please tell me the device to resize as the first parameter, like /dev/sda'
     exit 1
 fi
 
 
 if [[ $# -eq 1 ]] ; then
-    echo 'please tell me the partition number to resize as the second parameter, like 1 in case you mean /dev/sda1 or 4, if you mean /dev/sda2'
+    echo 'Please tell me the partition number to resize as the second parameter, like 1 in case you mean /dev/sda1, or 4 if you mean /dev/sda2'
     exit 1
 fi
 
@@ -25,7 +25,7 @@ DEVICE=$1
 PARTNR=$2
 APPLY=$3
 
-fdisk -l $DEVICE$PARTNR >> /dev/null 2>&1 || (echo "could not find device $DEVICE$PARTNR - please check the name" && exit 1)
+fdisk -l $DEVICE$PARTNR >> /dev/null 2>&1 || (echo "Could not find device $DEVICE$PARTNR - please check the name" && exit 1)
 
 CURRENTSIZEB=`fdisk -l $DEVICE$PARTNR | grep "Disk $DEVICE$PARTNR" | cut -d' ' -f5`
 CURRENTSIZE=`expr $CURRENTSIZEB / 1024 / 1024`
