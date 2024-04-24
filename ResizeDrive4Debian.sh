@@ -1,3 +1,13 @@
+# Find your partition information:
+# parted -l
+
+# To resize the fourth partition to the maximum size, so /dev/sda4
+# sandbox mode / no changes are done:
+# ./resize.sh /dev/sda 4
+# to apply the changes:
+# ./resize.sh /dev/sda 4 apply
+
+
 #!/bin/bash
 set -e
 
