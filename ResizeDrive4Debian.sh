@@ -7,7 +7,6 @@
 # to apply the changes:
 # ./resize.sh /dev/sda 4 apply
 
-
 #!/bin/bash
 set -e
 
