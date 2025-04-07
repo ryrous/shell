@@ -1,57 +1,53 @@
-######################################
-# Intall DotNet on ARM64
-######################################
-# install the dependencies
-sudo apt install libc6 libgcc1 libgssapi-krb5-2 libicu72 libssl1.1 libstdc++6 zlib1g -y
 
-# Get the .NET install script
-wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+#!/bin/bash
+###########################################################
+# Install PowerShell Core on Debian/Ubuntu ARM64 via APT
+###########################################################
 
-# Make it executable
-sudo chmod +x dotnet-install.sh
+# Exit immediately if a command exits with a non-zero status.
+set -e
 
-# Install the .NET SDK 8.0 (LTS) for ARM64
-./dotnet-install.sh --architecture arm64 --channel LTS
+# --- Variables ---
+# Detect Debian/Ubuntu version (adjust if needed for other derivatives)
+# Note: This is a basic detection. A more robust script might use /etc/os-release more thoroughly.
+DEBIAN_VERSION=$(grep "VERSION_ID=" /etc/os-release | cut -d '"' -f 2)
+if [[ -z "$DEBIAN_VERSION" ]]; then
+  echo "Could not automatically determine Debian/Ubuntu version."
+  # Defaulting to 12, as in the original script. Adjust if necessary.
+  DEBIAN_VERSION="12"
+  echo "Defaulting to Debian version ${DEBIAN_VERSION}. Verify compatibility."
+fi
+# Or, explicitly set it:
+# DEBIAN_VERSION="12" # For Debian 12 Bookworm
+# DEBIAN_VERSION="11" # For Debian 11 Bullseye
+# UBUNTU_VERSION="22.04" # For Ubuntu 22.04 Jammy
+# UBUNTU_VERSION="24.04" # For Ubuntu 24.04 Noble
+# Check Microsoft docs for the correct codename/version for your OS.
 
-# Install the .NET runtime 8.0 (LTS) for ARM64
-# ./dotnet-install.sh --architecture arm64 --channel LTS --runtime dotnet
+# --- Prerequisites ---
+echo "Updating package lists and installing prerequisites..."
+sudo apt update
+sudo apt install -y wget apt-transport-https software-properties-common gnupg curl
 
-# Set environment variables system-wide
-sudo tee /etc/profile.d/dotnet.sh <<EOF
-export DOTNET_ROOT=$HOME/.dotnet
-export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
-EOF
+# --- Add Microsoft Repository ---
+# Note: Using the source list method is often preferred over the .deb package.
+echo "Downloading Microsoft GPG key..."
+wget -q "https://packages.microsoft.com/config/debian/${DEBIAN_VERSION}/packages-microsoft-prod.deb" -O packages-microsoft-prod.deb
 
-
-######################################
-# Install PowerShell on ARM64
-######################################
-# Install system components
-sudo apt update && sudo apt install -y curl gnupg apt-transport-https wget
-
-# Download the Microsoft Repository package
-wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-
-# Install the Microsoft Repository package
+echo "Installing Microsoft repository configuration..."
 sudo dpkg -i packages-microsoft-prod.deb
 
-# Remove the Microsoft Repository package
+echo "Cleaning up downloaded package..."
 rm packages-microsoft-prod.deb
 
-# Update APT (optional)
+# --- Install PowerShell ---
+echo "Updating package lists after adding Microsoft repo..."
 sudo apt update
 
-# Download the powershell '.tar.gz' archive
-curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.4.2/powershell-7.4.2-linux-arm64.tar.gz
+echo "Installing PowerShell..."
+sudo apt install -y powershell
 
-# Create the target folder where powershell will be placed
-sudo mkdir -p /opt/microsoft/powershell/7
+echo "PowerShell installation complete. You can now run 'pwsh'."
 
-# Expand powershell to the target folder
-sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
-
-# Set execute permissions
-sudo chmod +x /opt/microsoft/powershell/7/pwsh
-
-# Create the symbolic link that points to pwsh
-sudo ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+# Optional: Verify installation
+pwsh --version
